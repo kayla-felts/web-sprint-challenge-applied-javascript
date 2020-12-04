@@ -1,3 +1,5 @@
+import axios from 'axios';
+
 // STEP 3: Create article cards.
 // -----------------------
 // Send an HTTP GET request to the following address: https://lambda-times-api.herokuapp.com/articles
@@ -20,3 +22,49 @@
 // Add a listener for click events so that when a user clicks on a card, the headline of the article is logged to the console.
 //
 // Use your function to create a card for each of the articles, and append each card to the DOM.
+const entryPoint = document.querySelector('.cards-container');
+axios
+    .get('https://lambda-times-api.herokuapp.com/articles')
+    .then((res) => {
+        console.log(res.data.articles);
+        const article = res.data.articles;
+        const art = Array.from(article);
+        art.forEach(arts => {
+            const artCont = articleMaker(arts);
+            entryPoint.append(artCont);
+        });
+    })
+    .catch((error) => {
+        console.log(error)
+    });
+
+function articleMaker(obj){
+    const card = document.createElement('div');
+    const headline = document.createElement('div');
+    const author = document.createElement('div');
+    const imgCont = document.createElement('div');
+    const authorPhoto = document.createElement('img');
+    const authorName = document.createElement('span');
+
+    card.classList.add('card');
+    headline.classList.add('headline');
+    author.classList.add('author');
+    imgCont.classList.add('img-container');
+
+    authorPhoto.setAttribute('src', obj.authorPhoto);
+
+    headline.textContent = `${obj.headline}`;
+    authorName.textContent = `${obj.authorName}`;
+
+    card.appendChild(headline);
+    card.appendChild(author);
+    author.appendChild(imgCont);
+    imgCont.appendChild(authorPhoto);
+    author.appendChild(authorName);
+
+    headline.addEventListener('click', (event) =>{
+        console.log(`${obj.headline}`)
+    })
+    
+    return card;
+}
