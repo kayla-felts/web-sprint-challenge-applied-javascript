@@ -26,10 +26,8 @@ const entryPoint = document.querySelector('.cards-container');
 axios
     .get('https://lambda-times-api.herokuapp.com/articles')
     .then((res) => {
-        console.log(res.data.articles);
         const article = res.data.articles;
-        const art = Array.from(article);
-        art.forEach(arts => {
+        Array.from(article).forEach(arts => {
             const artCont = articleMaker(arts);
             entryPoint.append(artCont);
         });
@@ -37,7 +35,7 @@ axios
     .catch((error) => {
         console.log(error)
     });
-
+ 
 function articleMaker(obj){
     const card = document.createElement('div');
     const headline = document.createElement('div');
